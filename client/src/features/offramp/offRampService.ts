@@ -30,27 +30,6 @@ function httpErrorType(status: number): OffRampErrorType {
 
 const STORAGE_KEY = "stellar_yield_offramp_txns";
 
-/**
- * Create a structured off-ramp error
- */
-function createOffRampError(
-    type: OffRampErrorType,
-    userMessage: string,
-    retryable: boolean,
-    originalError?: Error,
-    transactionId?: string,
-): OffRampError {
-    const error = new Error(userMessage) as OffRampError;
-    error.type = type;
-    error.userMessage = userMessage;
-    error.retryable = retryable;
-    error.transactionId = transactionId;
-    if (originalError) {
-        error.cause = originalError;
-    }
-    return error;
-}
-
 export class OffRampService {
     readonly provider: OffRampProvider;
     private apiKey: string;
@@ -80,28 +59,7 @@ export class OffRampService {
         };
 
         // Validate destination address and memo
-        try {
-            this.validateDestination(request.bankAccount, transaction.memo);
-        } catch (error) {
-            if (error instanceof Error && error.message.includes("bank account")) {
-                throw createOffRampError(
-                    "INVALID_BANK_ACCOUNT",
-                    "Bank account number is invalid. Please check the format and try again.",
-                    false,
-                    error,
-                    txId,
-                );
-            } else if (error instanceof Error && error.message.includes("memo")) {
-                throw createOffRampError(
-                    "INVALID_MEMO",
-                    "Account holder name contains invalid characters. Please use only letters and numbers.",
-                    false,
-                    error,
-                    txId,
-                );
-            }
-            throw error;
-        }
+        this.validateDestination(request.bankAccount, transaction.memo);
 
         // Store transaction locally
         this.saveTransaction(transaction);
