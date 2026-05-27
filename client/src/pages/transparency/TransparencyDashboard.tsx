@@ -27,6 +27,8 @@ import {
 import { getApiBaseUrl } from "../../lib/api";
 import { parseSmokeRunResult } from "./smokeResults";
 import VaultReliabilityPanel from "./VaultReliabilityPanel";
+import AuditReplayReportPanel from "./AuditReplayReportPanel";
+import RegistryDiffPage from "./RegistryDiff";
 
 const API_BASE = getApiBaseUrl();
 
@@ -305,6 +307,8 @@ export default function TransparencyDashboard() {
 
             {/* Data Source Reliability */}
             <VaultReliabilityPanel />
+            <AuditReplayReportPanel />
+            <RegistryDiffPage />
         </div>
     );
 }

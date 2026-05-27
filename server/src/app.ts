@@ -44,6 +44,7 @@ import indexerRouter from "./routes/indexer";
 import rewardsRouter from "./routes/rewards";
 import reliabilityRouter from "./routes/reliability";
 import relayerStatusRouter from "./routes/relayerStatus";
+import auditReplayRouter from "./routes/auditReplay";
 import { createAuthChallenge, verifyAuthChallenge } from "./utils/stellarAuth";
 import {
   getRecommendationTimeline,
@@ -134,6 +135,7 @@ export function createApp() {
   app.use("/api/rewards", rewardsRouter);
   app.use("/api/reliability", reliabilityRouter);
   app.use("/api/relayer/status", relayerStatusRouter);
+  app.use("/api/audit-replay", auditReplayRouter);
 
   // Legacy JSON metrics (internal tooling)
   app.get("/api/metrics", getMetrics);
